@@ -14,6 +14,7 @@ Desc: 2048 game
 // Function Prototypes:
 // Print functions:
 void print_board(int gameBoard[ROW][COLUMN]);
+void print_with_spacing(int tile);
 // Boolean functions:
 int has_empty_space(int gameBoard[ROW][COLUMN]);
 int isLowercase(char c);
@@ -82,33 +83,12 @@ print_board()
 */
 void print_board(int gameBoard[ROW][COLUMN]) {
     int i, j;
-    printf("---------------------------------\n");
     for (i = 0; i < ROW; i++) {
-        printf("|");
-        for (j = 0; j < COLUMN; j++) {
-            switch (numUnitPlaces(gameBoard[i][j]))
-            {
-            case 1:
-                printf("   %d   |",gameBoard[i][j]);
-                break;
-            case 2:
-                printf("  %d   |",gameBoard[i][j]);
-                break;
-            case 3:
-                printf("  %d  |",gameBoard[i][j]);
-                break;
-            case 4: 
-                printf(" %d  |",gameBoard[i][j]);
-                break;
-            case 5:
-                printf(" %d |",gameBoard[i][j]);
-                break;
-            default:
-                break;
-            }
-        } printf("\n---------------------------------\n");;
+        printf("\n---------------------------------\n|");
+        for (j = 0; j < COLUMN; j++)
+            print_with_spacing(gameBoard[i][j]);
     } 
-    printf("Score: %d\n", score(gameBoard));
+    printf("\n---------------------------------\nScore: %d\n", score(gameBoard));
 }
 
 /*
@@ -190,7 +170,6 @@ rand_between()
         ==> max: the upper bound.
     output:
         ==> an integer in the range [min, max]. 
-
 */
 int rand_between(int min, int max) {
     return rand() % (max - min + 1);
@@ -392,7 +371,6 @@ void move_right(int gameBoard[ROW][COLUMN]) {
                 gameBoard[i][j+1] *= 2;
                 gameBoard[i][j] = 0;
             }
-
         }
     }
 }
@@ -415,4 +393,42 @@ int numUnitPlaces(int n) {
         n /= 10;
     }
     return counter;
+}
+
+/*
+print_with_spacing()
+    desc: 
+        ==> handles the formating required for printing the gameboard.
+    input: 
+        ==> tile: the integer number to be printed.
+
+*/
+
+
+void print_with_spacing(int tile) {
+    switch (numUnitPlaces(numUnitPlaces(tile)))
+    {
+        case 1:
+            printf("   %d   |", tile);
+            break;
+        case 2:
+            printf("  %d   |", tile);
+            break;
+        case 3:
+            printf("  %d  |", tile);
+            break;
+        case 4: 
+            printf(" %d  |", tile);
+            break;
+        case 5:
+            printf(" %d |", tile);
+            break;
+        case 6:
+            printf("%d |", tile);
+            break;
+        case 7: 
+            printf("%d|", tile);
+        default:
+            break;
+    }
 }
