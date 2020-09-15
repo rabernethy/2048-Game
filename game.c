@@ -82,11 +82,31 @@ print_board()
 */
 void print_board(int gameBoard[ROW][COLUMN]) {
     int i, j;
-    printf()
+    printf("---------------------------------\n");
     for (i = 0; i < ROW; i++) {
+        printf("|");
         for (j = 0; j < COLUMN; j++) {
-            printf("%d, ",gameBoard[i][j]);
-        } printf("\n");
+            switch (numUnitPlaces(gameBoard[i][j]))
+            {
+            case 1:
+                printf("   %d   |",gameBoard[i][j]);
+                break;
+            case 2:
+                printf("  %d   |",gameBoard[i][j]);
+                break;
+            case 3:
+                printf("  %d  |",gameBoard[i][j]);
+                break;
+            case 4: 
+                printf(" %d  |",gameBoard[i][j]);
+                break;
+            case 5:
+                printf(" %d |",gameBoard[i][j]);
+                break;
+            default:
+                break;
+            }
+        } printf("\n---------------------------------\n");;
     } 
     printf("\n");
 }
