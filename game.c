@@ -25,6 +25,7 @@ void game_over(int gameBoard[ROW][COLUMN]);
 // Calculation functions:
 int score(int gameBoard[ROW][COLUMN]);
 int rand_between(int min, int max);
+int numUnitPlaces(int n);
 // Character functions:
 char toLowercase(char c);
 char toUppercase(char c);
@@ -81,6 +82,7 @@ print_board()
 */
 void print_board(int gameBoard[ROW][COLUMN]) {
     int i, j;
+    printf()
     for (i = 0; i < ROW; i++) {
         for (j = 0; j < COLUMN; j++) {
             printf("%d, ",gameBoard[i][j]);
@@ -373,4 +375,24 @@ void move_right(int gameBoard[ROW][COLUMN]) {
 
         }
     }
+}
+
+/*
+numUnitPlaces()
+    desc: 
+        ==> counts the number of unit places in an integer.
+    input:
+        ==> n: integer to have it's unit places counted.
+    output: 
+        ==> returns the number of unit places in n.
+*/
+int numUnitPlaces(int n) {
+    if(n == 0) 
+        return 1;
+    int counter = 0;
+    while (n != 0) {
+        counter++;
+        n /= 10;
+    }
+    return counter;
 }
