@@ -179,7 +179,7 @@ char get_move() {
     do {
         scanf("%c",&c);
     } while (c != 'w' || c != 'W' ||c != 'a' ||c != 'A' ||c != 's' ||c != 'S' ||c != 'd' ||c != 'D');
-    return input;
+    return toLowercase(input);
 }
 
 /*
@@ -243,7 +243,7 @@ isUppercase()
         ==> returns 0 / FALSE otherwise.
 */
 int isUppercase(char c) {
-    if(c >= && c <= )
+    if(c >= 65 && c <= 90)
         return 1; // TRUE
     return 0; // FALSE
 }
