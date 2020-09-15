@@ -64,7 +64,7 @@ int main() {
             move_left(gameBoard);
         }
         else if (move == 's') { // down
-            //move_down(gameBoard);
+            move_down(gameBoard);
         }
         else if(move == 'd') { // right
             //move_right(gameBoard);
@@ -268,7 +268,7 @@ int isUppercase(char c) {
 /*
 move_up()
     desc:
-        ==>
+        ==> goes column by column and shifts the tiles towards the top.
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
@@ -289,7 +289,7 @@ void move_up(int gameBoard[ROW][COLUMN]) {
 /*
 move_left()
     desc:
-        ==>
+        ==> goes row by row and shifts tiles to the left.
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
@@ -309,18 +309,28 @@ void move_left(int gameBoard[ROW][COLUMN]) {
 /*
 move_down()
     desc:
-        ==>
+        ==> goes column by column and shifts tiles down.
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
 void move_down(int gameBoard[ROW][COLUMN]) {
-
+    int i, j;
+    for (i = 0; i < COLUMN; i++) {
+        for(j = ROW - 1; j > 0; j--) {
+            if(gameBoard[j+1][i] == 0 && gameBoard[j][i] != 0) {
+                gameBoard[j+1][i] = gameBoard[j][i];
+                gameBoard[j][i] = 0;
+                move_down(gameBoard);
+            }
+        }
+    }
+    
 }
 
 /*
 move_right()
     desc:
-        ==>
+        ==> goes tile by tile and shifts 
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
