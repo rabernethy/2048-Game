@@ -48,7 +48,7 @@ int main() {
         // generate a random number 1-10:
         //   ==> if 1-6, spawn a 2 randomly on the board. 
         //   ==> if 7-10, spawn a 4 randomly on the board.
-        (rand_between(1,10) <= 6) ? new_random_tile(2, gameBoard) : new_random_tile(4, gameBoard);
+        (rand_between(1,10) <= 8) ? new_random_tile(2, gameBoard) : new_random_tile(4, gameBoard);
 
         // print out the game state.
         print_board(gameBoard);
@@ -83,7 +83,7 @@ void print_board(int gameBoard[ROW][COLUMN]) {
     int i, j;
     for (i = 0; i < ROW; i++) {
         for (j = 0; j < COLUMN; j++) {
-            printf("%d",gameBoard[i][j]);
+            printf("%d, ",gameBoard[i][j]);
         } printf("\n");
     } 
     printf("\n");
@@ -269,6 +269,7 @@ int isUppercase(char c) {
 move_up()
     desc:
         ==> goes column by column and shifts the tiles towards the top.
+        ==> merges tiles if the same tile exists in the position about to be moved.
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
@@ -276,10 +277,16 @@ void move_up(int gameBoard[ROW][COLUMN]) {
     int i, j;
     for (i = 0; i < COLUMN; i++) {
         for(j = 1; j < ROW; j++) {
+            // if there is an empty tile
             if(gameBoard[j-1][i] == 0 && gameBoard[j][i] != 0) {
                 gameBoard[j-1][i] = gameBoard[j][i];
                 gameBoard[j][i] = 0;
                 move_up(gameBoard);
+            }
+            // if the tiles are the same, merge.
+            if(gameBoard[j-1][i] == gameBoard[j][i] && gameBoard[j][i] != 0) {
+                gameBoard[j-1][i] *= 2;
+                gameBoard[j][i] = 0;
             }
         }
     }
@@ -290,6 +297,7 @@ void move_up(int gameBoard[ROW][COLUMN]) {
 move_left()
     desc:
         ==> goes row by row and shifts tiles to the left.
+        ==> merges tiles if the same tile exists in the position about to be moved.
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
@@ -297,10 +305,16 @@ void move_left(int gameBoard[ROW][COLUMN]) {
     int i, j;
     for (i = 0; i < ROW; i++) {
         for(j = 1; j < COLUMN; j++) {
+            // if there is an empty tile
             if(gameBoard[i][j-1] == 0 && gameBoard[i][j] != 0) {
                 gameBoard[i][j-1] = gameBoard[i][j];
                 gameBoard[i][j] = 0;
                 move_left(gameBoard);
+            }
+            // if the tiles are the same, merge.
+            if(gameBoard[i][j-1] == gameBoard[i][j] && gameBoard[i][j] != 0) {
+                gameBoard[i][j-1] *= 2;
+                gameBoard[i][j] = 0;
             }
         }
     }
@@ -310,27 +324,34 @@ void move_left(int gameBoard[ROW][COLUMN]) {
 move_down()
     desc:
         ==> goes column by column and shifts tiles down.
+        ==> merges tiles if the same tile exists in the position about to be moved.
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
 void move_down(int gameBoard[ROW][COLUMN]) {
     int i, j;
     for (i = 0; i < COLUMN; i++) {
-        for(j = ROW - 1; j > 0; j--) {
+        for(j = ROW - 2; j >= 0; j--) {
+            // if there is an empty tile
             if(gameBoard[j+1][i] == 0 && gameBoard[j][i] != 0) {
                 gameBoard[j+1][i] = gameBoard[j][i];
                 gameBoard[j][i] = 0;
                 move_down(gameBoard);
             }
+            // if the tiles are the same, merge.
+            if(gameBoard[j+1][i] == gameBoard[j][i] && gameBoard[j][i] != 0) {
+                gameBoard[j+1][i] *= 2;
+                gameBoard[j][i] = 0;
+            }
         }
     }
-    
 }
 
 /*
 move_right()
     desc:
         ==> goes row by row and shifts tiles to the right. 
+        ==> merges tiles if the same tile exists in the position about to be moved.
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
@@ -338,11 +359,18 @@ void move_right(int gameBoard[ROW][COLUMN]) {
     int i, j;
     for (i = 0; i < ROW; i++) {
         for(j = COLUMN - 2; j >= 0; j--) {
+            // if there is an empty tile
             if(gameBoard[i][j+1] == 0 && gameBoard[i][j] != 0) {
                 gameBoard[i][j+1] = gameBoard[i][j];
                 gameBoard[i][j] = 0;
                 move_right(gameBoard);
             }
+            // if the tiles are the same, merge.
+            if(gameBoard[i][j+1] == gameBoard[i][j] && gameBoard[i][j] != 0) {
+                gameBoard[i][j+1] *= 2;
+                gameBoard[i][j] = 0;
+            }
+
         }
     }
 }
