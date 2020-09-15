@@ -7,30 +7,41 @@ Desc: 2048 game
 #include <stdlib.h>
 #include <time.h>
 
-
+// Constants:
 #define M 4
 #define N 4
 
 // Function Prototypes:
+// Print functions:
 void print_board(int gameBoard[M][N]);
-void new_random_tile(int tile, int gameBoard[M][N]);
+// Boolean functions:
 int has_empty_space(int gameBoard[M][N]);
+int isLowercase(char c);
+int isUppercase(char c);
+// Game action functions:
+void new_random_tile(int tile, int gameBoard[M][N]);
+char get_move();
+void game_over(int gameBoard[M][N]);
+// Calculation functions:
 int score(int gameBoard[M][N]);
 int rand_between(int min, int max);
-void game_over(int gameBoard[M][N]);
-char get_move();
+// Character functions:
 char toLowercase(char c);
-int isLowercase(char c);
 char toUppercase(char c);
-int isUppercase(char c);
-
-
+// Move functions:
+void move_up(int gameBoard[M][N]);
+void move_left(int gameBoard[M][N]);
+void move_down(int gameBoard[M][N]);
+void move_right(int gameBoard[M][N]);
 
 // Main Function:
 int main() {
     // 2D int array that holds the game state.
     int gameBoard[M][N] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+    // Print the game instructions.
     printf("Instructions: ");
+
     // Game loop:
     while(1) {
 
@@ -46,11 +57,19 @@ int main() {
         char move = get_move();
 
         // alter the board based on the move. (wasd)
+        if(move == 'w') { // up
+            
+        }
+        else if(move == 'a') { // left
 
+        }
+        else if (move == 's') { // down
 
-
+        }
+        else if(move == 'd') { // right
+            
+        }
     }
-    
 }
 
 /*
@@ -198,8 +217,6 @@ char toLowercase(char c) {
     return c;
 }
 
-
-
 /*
 isLowercase()
     desc:
@@ -246,4 +263,52 @@ int isUppercase(char c) {
     if(c >= 65 && c <= 90)
         return 1; // TRUE
     return 0; // FALSE
+}
+
+/*
+move_up()
+    desc:
+        ==>
+    input:
+        ==> gameBoard: a 2d array that contains the game state.
+*/
+void move_up(int gameBoard[M][N]) {
+    for (size_t i = 0; i < count; i++)
+    {
+        /* code */
+    }
+    
+}
+
+/*
+move_left()
+    desc:
+        ==>
+    input:
+        ==> gameBoard: a 2d array that contains the game state.
+*/
+void move_left(int gameBoard[M][N]) {
+
+}
+
+/*
+move_down()
+    desc:
+        ==>
+    input:
+        ==> gameBoard: a 2d array that contains the game state.
+*/
+void move_down(int gameBoard[M][N]) {
+
+}
+
+/*
+move_right()
+    desc:
+        ==>
+    input:
+        ==> gameBoard: a 2d array that contains the game state.
+*/
+void move_right(int gameBoard[M][N]) {
+
 }
