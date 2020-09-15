@@ -17,28 +17,24 @@ void new_random_tile(int tile, int gameBoard[M][N]);
 int has_empty_space(int gameBoard[M][N]);
 int score(int gameBoard[M][N]);
 int rand_between(int min, int max);
-
+void game_over(int gameBoard[M][N]);
 
 int main() {
     // 2D int array that holds the game state.
     int gameBoard[M][N] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-
-
-
-
 // Game loop:
-    while(true) {
+    while(1) {
 
         // generate a random number 1-10:
         //   ==> if 1-6, spawn a 2 randomly on the board. 
         //   ==> if 7-10, spawn a 4 randomly on the board.
-        ((rand() % (10 - 1 + 1)) + 1 <= 6) ? new_random_tile(2, gameBoard) : new_random_tile(4, gameBoard);
+        (rand_between(1,10) <= 6) ? new_random_tile(2, gameBoard) : new_random_tile(4, gameBoard);
 
         // print out the game state.
         print_board(gameBoard);
 
-
+        // wait for player move input.
 
 
 
@@ -61,7 +57,8 @@ void print_board(int gameBoard[M][N]) {
         for (j = 0; j < N; j++) {
             printf("%d",gameBoard[i][j]);
         } printf("\n");
-    }
+    } 
+    printf("\n");
 }
 
 /*
@@ -77,22 +74,23 @@ new_random_tile()
 void new_random_tile(int tile, int gameBoard[M][N]) {
     // check if there is somewhere to place a tile.
     if(has_empty_space(gameBoard)) {
-        int flag = 1;
+        // try to place the tile.
+        int x, y, flag = 1;
         do {
-            
-
-
-        } while (/* condition */);
-        
-        
+            // generate coordinates for a random space on the gameBoard.
+            x = rand_between(0,3);
+            y = rand_between(0,3);
+            // if the space is empty, place the tile there and break from the loop.
+            if(gameBoard[x][y] == 0) {
+                gameBoard[x][y] = tile;
+                flag = 0;
+            }
+        } while (flag);
     }
-
-    // there is no where to place a random tile, score and end the game.
+    // Game Over!
     else {
-        printf("\n\nGame Over! Final Score: %d.\n", score(gameBoard));
-        exit(1);
+        game_over(gameBoard);
     }
-
 }
 
 /*
@@ -128,7 +126,7 @@ score()
 int score(int gameBoard[M][N]) {
     int i, j, sum = 0;
     for(i = 0; i < M; i++) {
-        for(j = 0; j < N, j++) 
+        for(j = 0; j < N; j++) 
             sum += gameBoard[i][j];
     }
     return sum;
@@ -145,5 +143,17 @@ rand_between()
 
 */
 int rand_between(int min, int max) {
-    return rand() % (max - min + 1) + 1;
+    return rand() % (max - min + 1);
+}
+
+/*
+game_over()
+    desc: 
+        ==> prints a message when the game is over and quits the program.
+    input:
+        ==> gameboard: a 2d array that contains the game state.
+*/
+void game_over(int gameBoard[M][N]) {
+    printf("\n\nGame Over!\nFinal Score: %d.\n", score(gameBoard));
+    exit(1);
 }
