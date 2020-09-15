@@ -16,7 +16,7 @@ void print_board(int gameBoard[M][N]);
 void new_random_tile(int tile, int gameBoard[M][N]);
 int has_empty_space(int gameBoard[M][N]);
 int score(int gameBoard[M][N]);
-
+int rand_between(int min, int max);
 
 
 int main() {
@@ -77,7 +77,14 @@ new_random_tile()
 void new_random_tile(int tile, int gameBoard[M][N]) {
     // check if there is somewhere to place a tile.
     if(has_empty_space(gameBoard)) {
+        int flag = 1;
+        do {
+            
 
+
+        } while (/* condition */);
+        
+        
     }
 
     // there is no where to place a random tile, score and end the game.
@@ -125,4 +132,18 @@ int score(int gameBoard[M][N]) {
             sum += gameBoard[i][j];
     }
     return sum;
+}
+/*
+rand_between()
+    desc: 
+        ==> finds a random number in the range [min, max].
+    inputs:
+        ==> min: the lower bound.
+        ==> max: the upper bound.
+    output:
+        ==> an integer in the range [min, max]. 
+
+*/
+int rand_between(int min, int max) {
+    return rand() % (max - min + 1) + 1;
 }
