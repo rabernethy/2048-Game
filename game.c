@@ -67,7 +67,7 @@ int main() {
             move_down(gameBoard);
         }
         else if(move == 'd') { // right
-            //move_right(gameBoard);
+            move_right(gameBoard);
         }
     }
 }
@@ -330,10 +330,19 @@ void move_down(int gameBoard[ROW][COLUMN]) {
 /*
 move_right()
     desc:
-        ==> goes tile by tile and shifts 
+        ==> goes row by row and shifts tiles to the right. 
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
 void move_right(int gameBoard[ROW][COLUMN]) {
-    
+    int i, j;
+    for (i = 0; i < ROW; i++) {
+        for(j = COLUMN - 2; j >= 0; j--) {
+            if(gameBoard[i][j+1] == 0 && gameBoard[i][j] != 0) {
+                gameBoard[i][j+1] = gameBoard[i][j];
+                gameBoard[i][j] = 0;
+                move_right(gameBoard);
+            }
+        }
+    }
 }
