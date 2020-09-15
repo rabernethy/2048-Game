@@ -8,39 +8,39 @@ Desc: 2048 game
 #include <time.h>
 
 // Constants:
-#define M 4
-#define N 4
+#define ROW 4
+#define COLUMN 4
 
 // Function Prototypes:
 // Print functions:
-void print_board(int gameBoard[M][N]);
+void print_board(int gameBoard[ROW][COLUMN]);
 // Boolean functions:
-int has_empty_space(int gameBoard[M][N]);
+int has_empty_space(int gameBoard[ROW][COLUMN]);
 int isLowercase(char c);
 int isUppercase(char c);
 // Game action functions:
-void new_random_tile(int tile, int gameBoard[M][N]);
+void new_random_tile(int tile, int gameBoard[ROW][COLUMN]);
 char get_move();
-void game_over(int gameBoard[M][N]);
+void game_over(int gameBoard[ROW][COLUMN]);
 // Calculation functions:
-int score(int gameBoard[M][N]);
+int score(int gameBoard[ROW][COLUMN]);
 int rand_between(int min, int max);
 // Character functions:
 char toLowercase(char c);
 char toUppercase(char c);
 // Move functions:
-void move_up(int gameBoard[M][N]);
-void move_left(int gameBoard[M][N]);
-void move_down(int gameBoard[M][N]);
-void move_right(int gameBoard[M][N]);
+void move_up(int gameBoard[ROW][COLUMN]);
+void move_left(int gameBoard[ROW][COLUMN]);
+void move_down(int gameBoard[ROW][COLUMN]);
+void move_right(int gameBoard[ROW][COLUMN]);
 
 // Main Function:
 int main() {
     // 2D int array that holds the game state.
-    int gameBoard[M][N] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    int gameBoard[ROW][COLUMN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
     // Print the game instructions.
-    printf("Instructions: ");
+    printf("Instructions: \n");
 
     // Game loop:
     while(1) {
@@ -58,16 +58,16 @@ int main() {
 
         // alter the board based on the move. (wasd)
         if(move == 'w') { // up
-            
+            move_up(gameBoard);
         }
         else if(move == 'a') { // left
-
+            move_left(gameBoard);
         }
         else if (move == 's') { // down
-
+            //move_down(gameBoard);
         }
         else if(move == 'd') { // right
-            
+            //move_right(gameBoard);
         }
     }
 }
@@ -79,10 +79,10 @@ print_board()
     inputs: 
         ==> gameBoard: a 2d array that contains the game state.
 */
-void print_board(int gameBoard[M][N]) {
+void print_board(int gameBoard[ROW][COLUMN]) {
     int i, j;
-    for (i = 0; i < M; i++) {
-        for (j = 0; j < N; j++) {
+    for (i = 0; i < ROW; i++) {
+        for (j = 0; j < COLUMN; j++) {
             printf("%d",gameBoard[i][j]);
         } printf("\n");
     } 
@@ -99,7 +99,7 @@ new_random_tile()
         ==> gameBoard: a 2d array that contains the game state.
 
 */
-void new_random_tile(int tile, int gameBoard[M][N]) {
+void new_random_tile(int tile, int gameBoard[ROW][COLUMN]) {
     // check if there is somewhere to place a tile.
     if(has_empty_space(gameBoard)) {
         // try to place the tile.
@@ -131,10 +131,10 @@ has_empty_space()
         ==> returns 1 / TRUE if there is an empty space on the gameboard.
         ==> returns 0 / FALSE if there is no empty space on the gameboard.
 */
-int has_empty_space(int gameBoard[M][N]) {
+int has_empty_space(int gameBoard[ROW][COLUMN]) {
     int i, j;
-    for(i = 0; i < M; i++) {
-        for(j = 0; j < N; j++) {
+    for(i = 0; i < ROW; i++) {
+        for(j = 0; j < COLUMN; j++) {
             if(gameBoard[i][j] == 0)
                 return 1;
         }
@@ -151,10 +151,10 @@ score()
     output:
         ==> returns the score.
 */
-int score(int gameBoard[M][N]) {
+int score(int gameBoard[ROW][COLUMN]) {
     int i, j, sum = 0;
-    for(i = 0; i < M; i++) {
-        for(j = 0; j < N; j++) 
+    for(i = 0; i < ROW; i++) {
+        for(j = 0; j < COLUMN; j++) 
             sum += gameBoard[i][j];
     }
     return sum;
@@ -181,7 +181,7 @@ game_over()
     input:
         ==> gameboard: a 2d array that contains the game state.
 */
-void game_over(int gameBoard[M][N]) {
+void game_over(int gameBoard[ROW][COLUMN]) {
     printf("\n\nGame Over!\nFinal Score: %d.\n", score(gameBoard));
     exit(1);
 }
@@ -196,8 +196,8 @@ get_move()
 char get_move() {
     char input;
     do {
-        scanf("%c",&c);
-    } while (c != 'w' || c != 'W' ||c != 'a' ||c != 'A' ||c != 's' ||c != 'S' ||c != 'd' ||c != 'D');
+        scanf("%c", &input);
+    } while (input != 'w' && input != 'W' &&input != 'a' &&input != 'A' &&input != 's' &&input != 'S' &&input != 'd' &&input != 'D');
     return toLowercase(input);
 }
 
@@ -212,7 +212,7 @@ toLowercase()
         ==> returns c if c wasn't an uppercase character.
 */
 char toLowercase(char c) {
-    if (isLowercase(c)) 
+    if (isUppercase(c)) 
         return c + 32;
     return c;
 }
@@ -272,10 +272,16 @@ move_up()
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
-void move_up(int gameBoard[M][N]) {
-    for (size_t i = 0; i < count; i++)
-    {
-        /* code */
+void move_up(int gameBoard[ROW][COLUMN]) {
+    int i, j;
+    for (i = 0; i < COLUMN; i++) {
+        for(j = 1; j < ROW; j++) {
+            if(gameBoard[j-1][i] == 0 && gameBoard[j][i] != 0) {
+                gameBoard[j-1][i] = gameBoard[j][i];
+                gameBoard[j][i] = 0;
+                move_up(gameBoard);
+            }
+        }
     }
     
 }
@@ -287,8 +293,17 @@ move_left()
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
-void move_left(int gameBoard[M][N]) {
-
+void move_left(int gameBoard[ROW][COLUMN]) {
+    int i, j;
+    for (i = 0; i < ROW; i++) {
+        for(j = 1; j < COLUMN; j++) {
+            if(gameBoard[i][j-1] == 0 && gameBoard[i][j] != 0) {
+                gameBoard[i][j-1] = gameBoard[i][j];
+                gameBoard[i][j] = 0;
+                move_left(gameBoard);
+            }
+        }
+    }
 }
 
 /*
@@ -298,7 +313,7 @@ move_down()
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
-void move_down(int gameBoard[M][N]) {
+void move_down(int gameBoard[ROW][COLUMN]) {
 
 }
 
@@ -309,6 +324,6 @@ move_right()
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
-void move_right(int gameBoard[M][N]) {
-
+void move_right(int gameBoard[ROW][COLUMN]) {
+    
 }
