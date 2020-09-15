@@ -401,10 +401,7 @@ print_with_spacing()
         ==> handles the formating required for printing the gameboard.
     input: 
         ==> tile: the integer number to be printed.
-
 */
-
-
 void print_with_spacing(int tile) {
     switch (numUnitPlaces(numUnitPlaces(tile)))
     {
