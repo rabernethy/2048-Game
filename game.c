@@ -18,12 +18,20 @@ int has_empty_space(int gameBoard[M][N]);
 int score(int gameBoard[M][N]);
 int rand_between(int min, int max);
 void game_over(int gameBoard[M][N]);
+char get_move();
+char toLowercase(char c);
+int isLowercase(char c);
+char toUppercase(char c);
+int isUppercase(char c);
 
+
+
+// Main Function:
 int main() {
     // 2D int array that holds the game state.
     int gameBoard[M][N] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
-// Game loop:
+    printf("Instructions: ");
+    // Game loop:
     while(1) {
 
         // generate a random number 1-10:
@@ -34,9 +42,10 @@ int main() {
         // print out the game state.
         print_board(gameBoard);
 
-        // wait for player move input.
+        // get the players move.
+        char move = get_move();
 
-
+        // alter the board based on the move. (wasd)
 
 
 
@@ -156,4 +165,85 @@ game_over()
 void game_over(int gameBoard[M][N]) {
     printf("\n\nGame Over!\nFinal Score: %d.\n", score(gameBoard));
     exit(1);
+}
+
+/*
+get_move()
+    desc:
+        ==> gets the player's move and returns it.
+    output:
+        ==> returns either w, a, s, or, d.
+*/
+char get_move() {
+    char input;
+    do {
+        scanf("%c",&c);
+    } while (c != 'w' || c != 'W' ||c != 'a' ||c != 'A' ||c != 's' ||c != 'S' ||c != 'd' ||c != 'D');
+    return input;
+}
+
+/*
+toLowercase()
+    desc: 
+        ==> turns an uppercase character to a lowercase character.
+    input:
+        ==> c: character to be converted to lowercase.
+    output:
+        ==> returns a lowercase character.
+        ==> returns c if c wasn't an uppercase character.
+*/
+char toLowercase(char c) {
+    if (isLowercase(c)) 
+        return c + 32;
+    return c;
+}
+
+
+
+/*
+isLowercase()
+    desc:
+        ==> checks if a character is a lowercase alphabetical character.
+    input:
+        ==> c: character to be checked.
+    output:
+        ==> returns 1 / TRUE if c is lowercase.
+        ==> returns 0 / FALSE otherwise.
+*/
+int isLowercase(char c) {
+    if (c >= 97 && c <= 122)
+        return 1; // TRUE
+    return 0; // FALSE
+}
+
+/*
+toUppercase()
+    desc: 
+        ==> turns a lowercase character to an uppercase character.
+    input:
+        ==> c: character to be converted to uppercase.
+    output:
+        ==> returns an uppercase character.  
+        ==> returns c if c wasn't a lowercase character.
+*/
+char toUppercase(char c) {
+    if (isLowercase(c))
+        return c - 32;
+    return c;
+}
+
+/*
+isUppercase()
+    desc:
+        ==> checks if a character is a uppercase alphabetical character.
+    input:
+        ==> c: character to be checked.
+    output:
+        ==> returns 1 / TRUE if c is uppercase.
+        ==> returns 0 / FALSE otherwise.
+*/
+int isUppercase(char c) {
+    if(c >= && c <= )
+        return 1; // TRUE
+    return 0; // FALSE
 }
