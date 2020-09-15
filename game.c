@@ -41,7 +41,7 @@ int main() {
     int gameBoard[ROW][COLUMN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
     // Print the game instructions.
-    printf("Instructions: \n");
+    printf("\nInstructions: \n - Use wasd to move the tiles (press enter after each input).\n - The game ends when the game board fills and a vaild move is not made.\n");
 
     // Game loop:
     while(1) {
@@ -108,7 +108,7 @@ void print_board(int gameBoard[ROW][COLUMN]) {
             }
         } printf("\n---------------------------------\n");;
     } 
-    printf("\n");
+    printf("Score: %d\n", score(gameBoard));
 }
 
 /*
