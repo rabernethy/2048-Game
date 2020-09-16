@@ -18,3 +18,9 @@
 ## How to run:
  - make && ./game
 
+## TODO:
+ - add highscore screen
+ - 10 leader board spots
+ - show at the end and save to score file
+
+ - fix game over (make it bring back up the default terminal upon quitting)
