@@ -3,7 +3,6 @@
 /all
 *.o
 
-
 ##### MacOS
 # General
 .DS_Store
