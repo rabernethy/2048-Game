@@ -2,10 +2,12 @@
 Author: Russell Abernethy
 Last Updated: 9/15/20
 Desc: 2048 game
+game.c
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <ncurses.h>
+#include <unistd.h>
 // Constants:
 #define ROW 4
 #define COLUMN 4
@@ -35,6 +37,10 @@ void move_down(int gameBoard[ROW][COLUMN]);
 void move_right(int gameBoard[ROW][COLUMN]);
 // Main Function:
 int main() {
+    int x = 0, y = 0;
+
+
+
     // 2D int array that holds the game state.
     int gameBoard[ROW][COLUMN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     // Print the game instructions.
