@@ -86,6 +86,9 @@ int main() {
         else if(move == 'd') { // right
             move_right(gameBoard);
         }
+				else if(move == 27) { // ESC
+					game_over(gameBoard);
+				}
     }
 }
 /*
@@ -222,8 +225,9 @@ char get_move() {
     do {
         c = getch();
         usleep(DELAY);
-    } while (c != 'w' && c != 'W' &&c != 'a' &&c != 'A' &&c != 's' &&c != 'S' &&c != 'd' &&c != 'D');
-    return toLowercase(c);
+    } while (c != 'w' && c != 'W' &&c != 'a' &&c != 'A' &&c != 's' &&c != 'S' &&c != 'd' &&c != 'D'&&c != 27);
+    //ESC Handle
+		return (c==27)?(c):(toLowercase(c));
 }
 /*
 toLowercase()
@@ -495,7 +499,7 @@ void print_rules() {
     mvprintw(0,0,"Instructions: ");
     mvprintw(1,0," - use 'w' 'a' 's' and 'd' to move tiles.");
     mvprintw(2,0," - the game ends when the board fills and no move is made.");
-    mvprintw(3,0," - you can press ctrl + z to quit.");
+    mvprintw(3,0," - you can press esc to quit.");
     refresh();
     sleep(5);
 }
