@@ -1,6 +1,6 @@
 ## Requirements:
-### MACOS
-- Homebrew (if gcc, ncurses or git aren't installed on your system.)
+### MacOS:
+- Homebrew:
 > $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 - gcc:
@@ -11,6 +11,7 @@
 
 - git:
 > $ brew install git
+
 
 ## How to download:
 > $ git clone https://github.com/rabernethy/2048-Game.git
