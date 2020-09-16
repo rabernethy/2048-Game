@@ -8,6 +8,7 @@ game.c
 #include <stdlib.h>
 #include <ncurses.h>
 #include <unistd.h>
+#include "colors.h"
 // Constants:
 #define ROW 4
 #define COLUMN 4
@@ -45,6 +46,15 @@ int main() {
     initscr();
     noecho();
     curs_set(FALSE);
+
+		// initialize colors
+		if (has_colors() == FALSE) {
+			endwin();
+			puts("Your terminal does not support color");
+			exit(1);
+		}
+		start_color();
+		init_colorpairs();
 
     // print the game rules.
     print_rules();
@@ -230,6 +240,7 @@ char toLowercase(char c) {
         return c + 32;
     return c;
 }
+
 /*
 isLowercase()
     desc:
@@ -410,31 +421,68 @@ print_with_spacing()
 */
 
 void print_with_spacing(int tile, int x, int y) {
-    switch (numUnitPlaces(tile)) { //format based on the number of units places in the number
+    int fg, bg;
+		fg = COLOR_WHITE;
+		switch (tile) {
+			case 2:
+			case 128:
+				bg = COLOR_YELLOW;
+				break;
+			case 4:
+			case 256:
+				bg = COLOR_MAGENTA;
+				break;
+			case 8:
+			case 512:
+				bg = COLOR_RED;
+				break;
+			case 16:
+			case 1024:
+				bg = COLOR_GREEN;
+				break;
+			case 32:
+			case 2048:
+				bg = COLOR_CYAN;
+				break;
+			case 64:
+			case 4096:
+				bg = COLOR_BLUE;
+				break;
+			default:
+				bg = COLOR_BLACK;
+		}
+		// Set the attribute
+		attron(COLOR_PAIR(colornum(fg, bg)));
+		attron(A_BOLD);
+		switch (numUnitPlaces(tile)) { //format based on the number of units places in the number
         case 1:
-            mvprintw(y,x,"   %d   |", tile);
+            mvprintw(y,x,"   %d   ",tile);
             break;
         case 2:
-            mvprintw(y,x,"  %d   |", tile);
+            mvprintw(y,x,"  %d   ",tile);
             break;
         case 3:
-            mvprintw(y,x,"  %d  |", tile);
+            mvprintw(y,x,"  %d  ", tile);
             break;
         case 4: 
-            mvprintw(y,x," %d  |", tile);
+            mvprintw(y,x," %d  ", tile);
             break;
         case 5:
-            mvprintw(y,x," %d |", tile);
+            mvprintw(y,x," %d ", tile);
             break;
         case 6:
-            mvprintw(y,x,"%d |", tile);
+            mvprintw(y,x,"%d ", tile);
             break;
         case 7: 
-            mvprintw(y,x,"%d|", tile);
+            mvprintw(y,x,"%d", tile);
             break;
         default:
             break;
     }
+		//Turn attribute off
+		attroff(COLOR_PAIR(colornum(fg, bg)));
+		attroff(A_BOLD);
+		mvprintw(y,x+7,"|");
 }
 
 /*
