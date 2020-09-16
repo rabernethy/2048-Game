@@ -11,10 +11,12 @@ game.c
 // Constants:
 #define ROW 4
 #define COLUMN 4
+#define DELAY 15000
 // Function Prototypes:
 // Print functions:
 void print_board(int gameBoard[ROW][COLUMN]);
-void print_with_spacing(int tile);
+void print_with_spacing(int tile, int x, int y);
+void print_rules();
 // Boolean functions:
 int has_empty_space(int gameBoard[ROW][COLUMN]);
 int isLowercase(char c);
@@ -39,20 +41,26 @@ void move_right(int gameBoard[ROW][COLUMN]);
 int main() {
     int x = 0, y = 0;
 
+    // initilize the window and set some settings.
+    initscr();
+    noecho();
+    curs_set(FALSE);
 
+    // print the game rules.
+    print_rules();
 
     // 2D int array that holds the game state.
-    int gameBoard[ROW][COLUMN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    // Print the game instructions.
-    printf("\nInstructions: \n - Use wasd to move the tiles (press enter after each input).\n - The game ends when the game board fills and a vaild move is not made.\n");
+    int gameBoard[ROW][COLUMN] = {{0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}};
     // Game loop:
     while(1) {
         // generate a random number 1-10:
         //   ==> if 1-6, spawn a 2 randomly on the board. 
         //   ==> if 7-10, spawn a 4 randomly on the board.
         (rand_between(1,10) <= 8) ? new_random_tile(2, gameBoard) : new_random_tile(4, gameBoard);
+
         // print out the game state.
         print_board(gameBoard);
+
         // get the players move.
         char move = get_move();
         // alter the board based on the move. (wasd)
@@ -78,13 +86,24 @@ print_board()
         ==> gameBoard: a 2d array that contains the game state.
 */
 void print_board(int gameBoard[ROW][COLUMN]) {
-    int i, j;
+    int i, j, x, y = 0;
+    clear(); // clear the screen
     for (i = 0; i < ROW; i++) {
-        printf("\n---------------------------------\n|");
-        for (j = 0; j < COLUMN; j++)
-            print_with_spacing(gameBoard[i][j]);
-    } 
-    printf("\n---------------------------------\nScore: %d\n", score(gameBoard));
+        x = 0;
+        mvprintw(y,x,"---------------------------------");
+        y++; //move down a line
+        mvprintw(y,x,"|"); 
+        x++;
+        for (j = 0; j < COLUMN; j++) {
+            print_with_spacing(gameBoard[i][j], x, y);
+            x += 8;
+        }
+        y++;
+    }
+    mvprintw(y,0,"---------------------------------");
+    y++;
+    mvprintw(y,0,"Score: %d", score(gameBoard));
+    refresh();
 }
 /*
 new_random_tile()
@@ -174,8 +193,11 @@ game_over()
         ==> gameboard: a 2d array that contains the game state.
 */
 void game_over(int gameBoard[ROW][COLUMN]) {
-    printf("\n\nGame Over!\nFinal Score: %d.\n", score(gameBoard));
-    exit(1);
+    clear();
+    mvprintw(0,0,"Game Over! Final Score: %d.", score(gameBoard));
+    refresh();
+    sleep(5);
+    endwin();
 }
 /*
 get_move()
@@ -185,11 +207,12 @@ get_move()
         ==> returns either w, a, s, or, d.
 */
 char get_move() {
-    char input;
+    char c;
     do {
-        scanf("%c", &input);
-    } while (input != 'w' && input != 'W' &&input != 'a' &&input != 'A' &&input != 's' &&input != 'S' &&input != 'd' &&input != 'D');
-    return toLowercase(input);
+        c = getch();
+        usleep(DELAY);
+    } while (c != 'w' && c != 'W' &&c != 'a' &&c != 'A' &&c != 's' &&c != 'S' &&c != 'd' &&c != 'D');
+    return toLowercase(c);
 }
 /*
 toLowercase()
@@ -381,33 +404,49 @@ print_with_spacing()
         ==> handles the formating required for printing the gameboard.
     input: 
         ==> tile: the integer number to be printed.
+        ==> x: the x cord to print the characters at
+        ==> y: the y cord to print the chracters at
 */
 
-
-void print_with_spacing(int tile) {
-    switch (numUnitPlaces(numUnitPlaces(tile)))
-    {
+void print_with_spacing(int tile, int x, int y) {
+    switch (numUnitPlaces(tile)) { //format based on the number of units places in the number
         case 1:
-            printf("   %d   |", tile);
+            mvprintw(y,x,"   %d   |", tile);
             break;
         case 2:
-            printf("  %d   |", tile);
+            mvprintw(y,x,"  %d   |", tile);
             break;
         case 3:
-            printf("  %d  |", tile);
+            mvprintw(y,x,"  %d  |", tile);
             break;
         case 4: 
-            printf(" %d  |", tile);
+            mvprintw(y,x," %d  |", tile);
             break;
         case 5:
-            printf(" %d |", tile);
+            mvprintw(y,x," %d |", tile);
             break;
         case 6:
-            printf("%d |", tile);
+            mvprintw(y,x,"%d |", tile);
             break;
         case 7: 
-            printf("%d|", tile);
+            mvprintw(y,x,"%d|", tile);
+            break;
         default:
             break;
     }
+}
+
+/*
+print_rules()
+    desc: 
+        ==> prints the rules of the game.
+*/
+void print_rules() {
+    clear();
+    mvprintw(0,0,"Instructions: ");
+    mvprintw(1,0," - use 'w' 'a' 's' and 'd' to move tiles.");
+    mvprintw(2,0," - the game ends when the board fills and no move is made.");
+    mvprintw(3,0," - you can press ctrl + z to quit.");
+    refresh();
+    sleep(5);
 }
