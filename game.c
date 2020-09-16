@@ -5,17 +5,14 @@ Desc: 2048 game
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <ncurses.h>
-#include <string.h>
-
+#include <time.h>
 // Constants:
 #define ROW 4
 #define COLUMN 4
-
 // Function Prototypes:
 // Print functions:
 void print_board(int gameBoard[ROW][COLUMN]);
-char* print_with_spacing(int tile);
+void print_with_spacing(int tile);
 // Boolean functions:
 int has_empty_space(int gameBoard[ROW][COLUMN]);
 int isLowercase(char c);
@@ -36,52 +33,37 @@ void move_up(int gameBoard[ROW][COLUMN]);
 void move_left(int gameBoard[ROW][COLUMN]);
 void move_down(int gameBoard[ROW][COLUMN]);
 void move_right(int gameBoard[ROW][COLUMN]);
-
 // Main Function:
 int main() {
     // 2D int array that holds the game state.
-    int gameBoard[ROW][COLUMN] = {{0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}};
-
-
-    /* initalize curses */
-
-    initscr();
-    keypad(stdscr, 1);
-    noecho();
-    cbreak();
-
-
-
+    int gameBoard[ROW][COLUMN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    // Print the game instructions.
+    printf("\nInstructions: \n - Use wasd to move the tiles (press enter after each input).\n - The game ends when the game board fills and a vaild move is not made.\n");
     // Game loop:
     while(1) {
-
         // generate a random number 1-10:
         //   ==> if 1-6, spawn a 2 randomly on the board. 
         //   ==> if 7-10, spawn a 4 randomly on the board.
         (rand_between(1,10) <= 8) ? new_random_tile(2, gameBoard) : new_random_tile(4, gameBoard);
-
         // print out the game state.
         print_board(gameBoard);
-
         // get the players move.
-        int c = getch();
-
+        char move = get_move();
         // alter the board based on the move. (wasd)
-        if(c == KEY_UP) { // up
+        if(move == 'w') { // up
             move_up(gameBoard);
         }
-        else if(c == KEY_LEFT) { // left
+        else if(move == 'a') { // left
             move_left(gameBoard);
         }
-        else if (c == KEY_DOWN) { // down
+        else if (move == 's') { // down
             move_down(gameBoard);
         }
-        else if(c == KEY_RIGHT) { // right
+        else if(move == 'd') { // right
             move_right(gameBoard);
         }
     }
 }
-
 /*
 print_board()
     desc: 
@@ -90,19 +72,14 @@ print_board()
         ==> gameBoard: a 2d array that contains the game state.
 */
 void print_board(int gameBoard[ROW][COLUMN]) {
-    clear();
     int i, j;
     for (i = 0; i < ROW; i++) {
-        char string[34];
-        printw("\n---------------------------------\n|");
-        for (j = 0; j < COLUMN; j++) 
-            strcat(string, print_with_spacing(gameBoard[i][j]));
-        printw("%s\n", string);
-    }
-    printw("\n---------------------------------\nScore: %d\n", score(gameBoard));
-    refresh();
+        printf("\n---------------------------------\n|");
+        for (j = 0; j < COLUMN; j++)
+            print_with_spacing(gameBoard[i][j]);
+    } 
+    printf("\n---------------------------------\nScore: %d\n", score(gameBoard));
 }
-
 /*
 new_random_tile()
     desc: 
@@ -111,7 +88,6 @@ new_random_tile()
     input:
         ==> tile: the int value that is being added to the gameboard
         ==> gameBoard: a 2d array that contains the game state.
-
 */
 void new_random_tile(int tile, int gameBoard[ROW][COLUMN]) {
     // check if there is somewhere to place a tile.
@@ -134,7 +110,6 @@ void new_random_tile(int tile, int gameBoard[ROW][COLUMN]) {
         game_over(gameBoard);
     }
 }
-
 /*
 has_empty_space()
     desc:
@@ -155,7 +130,6 @@ int has_empty_space(int gameBoard[ROW][COLUMN]) {
     } 
     return 0;
 }
-
 /*
 score()
     desc:
@@ -186,7 +160,6 @@ rand_between()
 int rand_between(int min, int max) {
     return rand() % (max - min + 1);
 }
-
 /*
 game_over()
     desc: 
@@ -195,11 +168,9 @@ game_over()
         ==> gameboard: a 2d array that contains the game state.
 */
 void game_over(int gameBoard[ROW][COLUMN]) {
-    mvprintw(10,0,"\n\nGame Over!\nFinal Score: %d.\n", score(gameBoard));
-    endwin();
+    printf("\n\nGame Over!\nFinal Score: %d.\n", score(gameBoard));
     exit(1);
 }
-
 /*
 get_move()
     desc:
@@ -208,13 +179,12 @@ get_move()
         ==> returns either w, a, s, or, d.
 */
 char get_move() {
-     int input;
+    char input;
     do {
-        input = wgetch(stdscr);
+        scanf("%c", &input);
     } while (input != 'w' && input != 'W' &&input != 'a' &&input != 'A' &&input != 's' &&input != 'S' &&input != 'd' &&input != 'D');
     return toLowercase(input);
 }
-
 /*
 toLowercase()
     desc: 
@@ -230,7 +200,6 @@ char toLowercase(char c) {
         return c + 32;
     return c;
 }
-
 /*
 isLowercase()
     desc:
@@ -246,7 +215,6 @@ int isLowercase(char c) {
         return 1; // TRUE
     return 0; // FALSE
 }
-
 /*
 toUppercase()
     desc: 
@@ -262,7 +230,6 @@ char toUppercase(char c) {
         return c - 32;
     return c;
 }
-
 /*
 isUppercase()
     desc:
@@ -278,7 +245,6 @@ int isUppercase(char c) {
         return 1; // TRUE
     return 0; // FALSE
 }
-
 /*
 move_up()
     desc:
@@ -306,7 +272,6 @@ void move_up(int gameBoard[ROW][COLUMN]) {
     }
     
 }
-
 /*
 move_left()
     desc:
@@ -333,7 +298,6 @@ void move_left(int gameBoard[ROW][COLUMN]) {
         }
     }
 }
-
 /*
 move_down()
     desc:
@@ -360,7 +324,6 @@ void move_down(int gameBoard[ROW][COLUMN]) {
         }
     }
 }
-
 /*
 move_right()
     desc:
@@ -387,7 +350,6 @@ void move_right(int gameBoard[ROW][COLUMN]) {
         }
     }
 }
-
 /*
 numUnitPlaces()
     desc: 
@@ -407,33 +369,39 @@ int numUnitPlaces(int n) {
     }
     return counter;
 }
-
 /*
 print_with_spacing()
     desc: 
         ==> handles the formating required for printing the gameboard.
     input: 
         ==> tile: the integer number to be printed.
-        ==> row: the row in which the line should be printed
 */
-char* print_with_spacing(int tile) {
-    char tileS[numUnitPlaces(tile)];
-    sprintf(tileS, "%d", tile);
+
+
+void print_with_spacing(int tile) {
     switch (numUnitPlaces(numUnitPlaces(tile)))
     {
         case 1:
-            return strcat("   ", strcat(tileS, "   |"));
+            printf("   %d   |", tile);
+            break;
         case 2:
-            return strcat("  ", strcat(tileS, "   |"));
+            printf("  %d   |", tile);
+            break;
         case 3:
-            return strcat("  ", strcat(tileS, "  |"));
+            printf("  %d  |", tile);
+            break;
         case 4: 
-            return strcat(" ", strcat(tileS, "  |"));
+            printf(" %d  |", tile);
+            break;
         case 5:
-            return strcat(" ", strcat(tileS, " |"));
+            printf(" %d |", tile);
+            break;
         case 6:
-            return strcat("", strcat(tileS, " |"));
-        default: 
-            return strcat("", strcat(tileS, "|"));
+            printf("%d |", tile);
+            break;
+        case 7: 
+            printf("%d|", tile);
+        default:
+            break;
     }
 }
