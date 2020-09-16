@@ -1,4 +1,5 @@
 ## Requirements:
+### MACOS
 - Homebrew (if gcc, ncurses or git aren't installed on your system.)
 > $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
