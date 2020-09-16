@@ -54,5 +54,8 @@ int main() {
         else if(move == 'd') { // right
             move_right(gameBoard);
         }
+				else if(move == 27) { // ESC
+					game_over(gameBoard);
+				}
     }
 }
