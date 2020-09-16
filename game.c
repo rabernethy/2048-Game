@@ -198,6 +198,7 @@ void game_over(int gameBoard[ROW][COLUMN]) {
     refresh();
     sleep(5);
     endwin();
+    exit(0);
 }
 /*
 get_move()
