@@ -46,8 +46,10 @@ int main() {
     /* initalize curses */
 
     initscr();
-    cbreak();
+    keypad(stdscr, 1);
     noecho();
+    cbreak();
+
 
 
     // Game loop:
@@ -62,19 +64,19 @@ int main() {
         print_board(gameBoard);
 
         // get the players move.
-        char move = get_move();
+        int c = getch();
 
         // alter the board based on the move. (wasd)
-        if(move == 'w') { // up
+        if(c == KEY_UP) { // up
             move_up(gameBoard);
         }
-        else if(move == 'a') { // left
+        else if(c == KEY_LEFT) { // left
             move_left(gameBoard);
         }
-        else if (move == 's') { // down
+        else if (c == KEY_DOWN) { // down
             move_down(gameBoard);
         }
-        else if(move == 'd') { // right
+        else if(c == KEY_RIGHT) { // right
             move_right(gameBoard);
         }
     }
@@ -92,12 +94,12 @@ void print_board(int gameBoard[ROW][COLUMN]) {
     int i, j;
     for (i = 0; i < ROW; i++) {
         char string[34];
-        mvprintw(0,i*2,"\n---------------------------------\n|");
+        printw("\n---------------------------------\n|");
         for (j = 0; j < COLUMN; j++) 
             strcat(string, print_with_spacing(gameBoard[i][j]));
-        mvprintw(0, i * 2 + 1, string);
+        printw("%s\n", string);
     }
-    mvprintw(0, 8, "\n---------------------------------\nScore: %d\n", score(gameBoard));
+    printw("\n---------------------------------\nScore: %d\n", score(gameBoard));
     refresh();
 }
 
@@ -206,9 +208,9 @@ get_move()
         ==> returns either w, a, s, or, d.
 */
 char get_move() {
-    char input;
+     int input;
     do {
-        input = (char)getch();
+        input = wgetch(stdscr);
     } while (input != 'w' && input != 'W' &&input != 'a' &&input != 'A' &&input != 's' &&input != 'S' &&input != 'd' &&input != 'D');
     return toLowercase(input);
 }
