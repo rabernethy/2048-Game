@@ -34,3 +34,4 @@ user@derek:~$ make && ./game
     - show at the end and save to score file
  - [x] fix game over (make it bring back up the default terminal upon quitting).
  - [x] add colors to the numbers @invention64
+ - [x] stop displaying 0 tiles
