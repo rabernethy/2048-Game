@@ -29,8 +29,8 @@ $ make && ./game
 
 ### TODO:
 
-- [x]add highscore screen
-- [] add quit game option
+ - [x]add highscore screen
+ - [] add quit game option
     - catch sigint
  - [] add highscore screen
  - [] 10 leader board spots
