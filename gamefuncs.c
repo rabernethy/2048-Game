@@ -387,31 +387,36 @@ void print_with_spacing(int tile, int x, int y) {
 		// Set the attribute
 		attron(COLOR_PAIR(colornum(fg, bg)));
 		attron(A_BOLD);
-		switch (numUnitPlaces(tile)) { //format based on the number of units places in the number
-        case 1:
-            mvprintw(y,x,"   %d   ",tile);
-            break;
-        case 2:
-            mvprintw(y,x,"  %d   ",tile);
-            break;
-        case 3:
-            mvprintw(y,x,"  %d  ", tile);
-            break;
-        case 4: 
-            mvprintw(y,x," %d  ", tile);
-            break;
-        case 5:
-            mvprintw(y,x," %d ", tile);
-            break;
-        case 6:
-            mvprintw(y,x,"%d ", tile);
-            break;
-        case 7: 
-            mvprintw(y,x,"%d", tile);
-            break;
-        default:
-            break;
-    }
+        // do not print the tile if it is zero
+        if (tile == 0)
+            mvprintw(y, x, "       ");
+        else {
+		    switch (numUnitPlaces(tile)) { //format based on the number of units places in the number
+            case 1:
+                mvprintw(y,x,"   %d   ",tile);
+                break;
+            case 2:
+                mvprintw(y,x,"  %d   ",tile);
+                break;
+            case 3:
+                mvprintw(y,x,"  %d  ", tile);
+                break;
+            case 4: 
+                mvprintw(y,x," %d  ", tile);
+                break;
+            case 5:
+                mvprintw(y,x," %d ", tile);
+                break;
+            case 6:
+                mvprintw(y,x,"%d ", tile);
+                break;
+            case 7: 
+                mvprintw(y,x,"%d", tile);
+                break;
+            default:
+                break;
+            }
+        }
 		//Turn attribute off
 		attroff(COLOR_PAIR(colornum(fg, bg)));
 		attroff(A_BOLD);
