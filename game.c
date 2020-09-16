@@ -5,7 +5,8 @@ Desc: 2048 game
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <ncurses.h>
+#include <string.h>
 
 // Constants:
 #define ROW 4
@@ -14,7 +15,7 @@ Desc: 2048 game
 // Function Prototypes:
 // Print functions:
 void print_board(int gameBoard[ROW][COLUMN]);
-void print_with_spacing(int tile);
+char* print_with_spacing(int tile);
 // Boolean functions:
 int has_empty_space(int gameBoard[ROW][COLUMN]);
 int isLowercase(char c);
@@ -39,10 +40,15 @@ void move_right(int gameBoard[ROW][COLUMN]);
 // Main Function:
 int main() {
     // 2D int array that holds the game state.
-    int gameBoard[ROW][COLUMN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    int gameBoard[ROW][COLUMN] = {{0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}};
 
-    // Print the game instructions.
-    printf("\nInstructions: \n - Use wasd to move the tiles (press enter after each input).\n - The game ends when the game board fills and a vaild move is not made.\n");
+
+    /* initalize curses */
+
+    initscr();
+    cbreak();
+    noecho();
+
 
     // Game loop:
     while(1) {
@@ -82,13 +88,17 @@ print_board()
         ==> gameBoard: a 2d array that contains the game state.
 */
 void print_board(int gameBoard[ROW][COLUMN]) {
+    clear();
     int i, j;
     for (i = 0; i < ROW; i++) {
-        printf("\n---------------------------------\n|");
-        for (j = 0; j < COLUMN; j++)
-            print_with_spacing(gameBoard[i][j]);
-    } 
-    printf("\n---------------------------------\nScore: %d\n", score(gameBoard));
+        char string[34];
+        mvprintw(0,i*2,"\n---------------------------------\n|");
+        for (j = 0; j < COLUMN; j++) 
+            strcat(string, print_with_spacing(gameBoard[i][j]));
+        mvprintw(0, i * 2 + 1, string);
+    }
+    mvprintw(0, 8, "\n---------------------------------\nScore: %d\n", score(gameBoard));
+    refresh();
 }
 
 /*
@@ -183,7 +193,8 @@ game_over()
         ==> gameboard: a 2d array that contains the game state.
 */
 void game_over(int gameBoard[ROW][COLUMN]) {
-    printf("\n\nGame Over!\nFinal Score: %d.\n", score(gameBoard));
+    mvprintw(10,0,"\n\nGame Over!\nFinal Score: %d.\n", score(gameBoard));
+    endwin();
     exit(1);
 }
 
@@ -197,7 +208,7 @@ get_move()
 char get_move() {
     char input;
     do {
-        scanf("%c", &input);
+        input = (char)getch();
     } while (input != 'w' && input != 'W' &&input != 'a' &&input != 'A' &&input != 's' &&input != 'S' &&input != 'd' &&input != 'D');
     return toLowercase(input);
 }
@@ -401,31 +412,26 @@ print_with_spacing()
         ==> handles the formating required for printing the gameboard.
     input: 
         ==> tile: the integer number to be printed.
+        ==> row: the row in which the line should be printed
 */
-void print_with_spacing(int tile) {
+char* print_with_spacing(int tile) {
+    char tileS[numUnitPlaces(tile)];
+    sprintf(tileS, "%d", tile);
     switch (numUnitPlaces(numUnitPlaces(tile)))
     {
         case 1:
-            printf("   %d   |", tile);
-            break;
+            return strcat("   ", strcat(tileS, "   |"));
         case 2:
-            printf("  %d   |", tile);
-            break;
+            return strcat("  ", strcat(tileS, "   |"));
         case 3:
-            printf("  %d  |", tile);
-            break;
+            return strcat("  ", strcat(tileS, "  |"));
         case 4: 
-            printf(" %d  |", tile);
-            break;
+            return strcat(" ", strcat(tileS, "  |"));
         case 5:
-            printf(" %d |", tile);
-            break;
+            return strcat(" ", strcat(tileS, " |"));
         case 6:
-            printf("%d |", tile);
-            break;
-        case 7: 
-            printf("%d|", tile);
-        default:
-            break;
+            return strcat("", strcat(tileS, " |"));
+        default: 
+            return strcat("", strcat(tileS, "|"));
     }
 }
