@@ -1,3 +1,8 @@
-## TODO
+## Requirements:
+- gcc
 
-> organize code into seperate files based on what they do.
+## How to run:
+- gcc game.c -o game
+
+- ./game
+
