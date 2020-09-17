@@ -28,7 +28,6 @@ user@derek:~$ make run
  
 ### ***TODO:***
  - [x] add quit game option
-    - catch sigint
  - [ ] add highscore screen @rabernethy
     - [ ] 10 leader board spots
     - show at the end and save to score file
