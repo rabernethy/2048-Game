@@ -29,5 +29,11 @@ void move_up(int gameBoard[ROW][COLUMN]);
 void move_left(int gameBoard[ROW][COLUMN]);
 void move_down(int gameBoard[ROW][COLUMN]);
 void move_right(int gameBoard[ROW][COLUMN]);
+
+void mergeU(int gameBoard[ROW][COLUMN], int currCol, int index);
+void mergeL(int gameBoard[ROW][COLUMN], int currRow, int index);
+void mergeD(int gameBoard[ROW][COLUMN], int currCol, int index);
+void mergeR(int gameBoard[ROW][COLUMN], int currRow, int index);
+
 #endif
 

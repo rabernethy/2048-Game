@@ -251,22 +251,9 @@ move_left()
         ==> gameBoard: a 2d array that contains the game state.
 */
 void move_left(int gameBoard[ROW][COLUMN]) {
-    int i, j;
-    for (i = 0; i < ROW; i++) {
-        for(j = 1; j < COLUMN; j++) {
-            // if there is an empty tile
-            if(gameBoard[i][j-1] == 0 && gameBoard[i][j] != 0) {
-                gameBoard[i][j-1] = gameBoard[i][j];
-                gameBoard[i][j] = 0;
-                move_left(gameBoard);
-            }
-            // if the tiles are the same, merge.
-            if(gameBoard[i][j-1] == gameBoard[i][j] && gameBoard[i][j] != 0) {
-                gameBoard[i][j-1] *= 2;
-                gameBoard[i][j] = 0;
-            }
-        }
-    }
+    int i;
+    for (i = 0; i < ROW; i++)
+        mergeL(gameBoard, i, 0);
 }
 
 /*
@@ -304,23 +291,11 @@ move_right()
     input:
         ==> gameBoard: a 2d array that contains the game state.
 */
+
 void move_right(int gameBoard[ROW][COLUMN]) {
-    int i, j;
-    for (i = 0; i < ROW; i++) {
-        for(j = COLUMN - 2; j >= 0; j--) {
-            // if there is an empty tile
-            if(gameBoard[i][j+1] == 0 && gameBoard[i][j] != 0) {
-                gameBoard[i][j+1] = gameBoard[i][j];
-                gameBoard[i][j] = 0;
-                move_right(gameBoard);
-            }
-            // if the tiles are the same, merge.
-            if(gameBoard[i][j+1] == gameBoard[i][j] && gameBoard[i][j] != 0) {
-                gameBoard[i][j+1] *= 2;
-                gameBoard[i][j] = 0;
-            }
-        }
-    }
+    int i;
+    for (i = 0; i < ROW; i++)
+        mergeR(gameBoard, i, 3);
 }
 
 /*
@@ -435,6 +410,119 @@ void print_rules() {
     mvprintw(2,0," - the game ends when the board fills and no move is made.");
     mvprintw(3,0," - you can press ctrl + z to quit.");
     refresh();
-    sleep(5);
+    sleep(1);
 }
 
+
+void mergeU(int gameBoard[ROW][COLUMN], int currCol, int index) {
+
+}
+void mergeL(int gameBoard[ROW][COLUMN], int currRow, int index) {
+    int i;
+    for (i = index + 1; i <= 3; i++) {
+
+        // if the tile ahead is != 0
+        if(gameBoard[currRow][i]) {
+
+            // if the current tile is zero:
+            if (gameBoard[currRow][index] == 0) {
+                gameBoard[currRow][index] = gameBoard[currRow][i];
+                gameBoard[currRow][i] = 0;
+                
+            }
+
+            // if the tiles are the same, combine them
+            else if(gameBoard[currRow][index] == gameBoard[currRow][i]) {
+                gameBoard[currRow][index] *= 2;
+                gameBoard[currRow][i] = 0;
+                mergeL(gameBoard, currRow, index + 1);
+                break;
+            }
+
+            // if the tiles are different:
+            else {
+                // if the tile is next to the current tile, do nothing
+                if(i - index > 1) {
+                    gameBoard[currRow][index + 1] = gameBoard[currRow][i];
+                    gameBoard[currRow][i] = 0;
+                    mergeL(gameBoard,currRow, index +1);
+                    break;
+                }
+                else {
+                    mergeL(gameBoard,currRow, index +1);
+                    break;
+                }
+            }
+        }
+    }    
+}
+
+void mergeD(int gameBoard[ROW][COLUMN], int currCol, int index) {
+    int i;
+    for (i = index - 1; i >= 0; i--) {
+        // if the tile ahead is != 0
+        if(gameBoard[currCol][i] != 0) {
+            // if the current tile is zero:
+            if (gameBoard[currCol][index] == 0) {
+                gameBoard[currCol][index] = gameBoard[currCol][i];
+                gameBoard[currCol][i] = 0;
+                i--;
+            }
+            // if the tiles are the same, combine them
+            if(gameBoard[currCol][index] == gameBoard[currCol][i]) {
+                gameBoard[currCol][index] *= 2;
+                gameBoard[currCol][i] = 0;
+            }
+            // if the tiles are different:
+            if (gameBoard[currCol][index] != gameBoard[currCol][i]) {
+                gameBoard[currCol][index-1] = gameBoard[currCol][i];
+                // handles edge case: the next tile is the tile.
+                if (index - 1 != i)
+                     gameBoard[currCol][i] = 0;
+                break;
+            }
+        }
+    }
+    // keep running if not done.
+    if(index > 0)
+        mergeR(gameBoard, currCol, index - 1);
+}
+
+
+void mergeR(int gameBoard[ROW][COLUMN],int currRow,int index) {
+    int i;
+    for (i = index - 1; i >= 0; i--) {
+
+        // if the tile ahead is != 0
+        if(gameBoard[currRow][i]) {
+            
+            // if the current tile is zero:
+            if (gameBoard[currRow][index] == 0) {
+                gameBoard[currRow][index] = gameBoard[currRow][i];
+                gameBoard[currRow][i] = 0;
+            }
+
+            // if the tiles are the same, combine them
+            else if(gameBoard[currRow][index] == gameBoard[currRow][i]) {
+                gameBoard[currRow][index] *= 2;
+                gameBoard[currRow][i] = 0;
+                mergeR(gameBoard,currRow, index-1);
+                break;
+            }
+
+            // if the tiles are different:
+            else {
+                // if the tile is next to the current tile, do nothing
+                if(index - i > 1) {
+                    gameBoard[currRow][index - 1] = gameBoard[currRow][i];
+                    gameBoard[currRow][i] = 0;
+                    
+                }
+                else {
+                    mergeR(gameBoard,currRow, index-1);
+                    break;
+                }
+            } 
+        }
+    }
+}
