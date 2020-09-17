@@ -27,7 +27,7 @@ user@derek:~$ make && ./game
 ```
  
 ### ***TODO:***
- - [ ] add quit game option
+ - [x] add quit game option
     - catch sigint
  - [ ] add highscore screen @rabernethy
     - [ ] 10 leader board spots
