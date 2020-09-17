@@ -23,7 +23,7 @@ user@derek:~$ git clone https://github.com/rabernethy/2048-Game.git
 
 ## **How to run:**
 ```console
-user@derek:~$ make && ./game
+user@derek:~$ make run
 ```
  
 ### ***TODO:***
