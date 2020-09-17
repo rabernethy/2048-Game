@@ -1,4 +1,5 @@
 # Makefile
+# Written By: James Gottshall
 CFLAGS= -I. -L.
 LDFLAGS=-lncurses
 CC = gcc

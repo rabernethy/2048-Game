@@ -1,4 +1,6 @@
 /* gamefuncs.c */
+
+/* Written By: Russell Abernethy & James Gottshall */
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
