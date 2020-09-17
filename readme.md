@@ -23,12 +23,12 @@ user@derek:~$ git clone https://github.com/rabernethy/2048-Game.git
 
 ## **How to run:**
 ```console
-user@derek:~$ make && ./game
+user@derek:~$ make
+user@derem:~$ ./all
 ```
  
 ### ***TODO:***
  - [x] add quit game option
-    - catch sigint
  - [ ] add highscore screen @rabernethy
     - [ ] 10 leader board spots
     - show at the end and save to score file
