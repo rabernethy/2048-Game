@@ -12,3 +12,10 @@ OBJ = colors.o game.o gamefuncs.o
 
 all: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+clean:
+	rm *.o
+	rm all
+
+run: all
+	./all
