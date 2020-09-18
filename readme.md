@@ -25,12 +25,3 @@ user@derek:~$ git clone https://github.com/rabernethy/2048-Game.git
 ```console
 user@derek:~$ make run
 ```
- 
-### ***TODO:***
- - [x] add quit game option
- - [ ] add highscore screen @rabernethy
-    - [ ] 10 leader board spots
-    - show at the end and save to score file
- - [x] fix game over (make it bring back up the default terminal upon quitting).
- - [x] add colors to the numbers @invention64
- - [x] stop displaying 0 tiles

@@ -1,10 +1,10 @@
 # Makefile
-# Written By: James Gottshall
+
 CFLAGS= -I. -L.
 LDFLAGS=-lncurses
 CC = gcc
-DEPS = colors.h gamefuncs.h
-OBJ = colors.o game.o gamefuncs.o
+DEPS = colors.h constants.h gamefuncs.h move.h print.h
+OBJ = colors.o game.o gamefuncs.o move.o print.o
 
 %.o: %.c %(DEPS)
 	$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)

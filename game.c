@@ -7,6 +7,9 @@
 #include <ncurses.h>
 #include "colors.h"
 #include "gamefuncs.h"
+#include "print.h"
+#include "move.h"
+#include "constants.h"
 
 // Main Function:
 int main() {
@@ -20,7 +23,7 @@ int main() {
 		// initialize colors
 		if (has_colors() == FALSE) {
 			endwin();
-			puts("Your terminal does not support color");
+			puts("Your terminal does not support color.");
 			exit(1);
 		}
 		start_color();
@@ -39,7 +42,7 @@ int main() {
         (rand_between(1,10) <= 8) ? new_random_tile(2, gameBoard) : new_random_tile(4, gameBoard);
 
         // print out the game state.
-        print_board(gameBoard);
+        print_board(gameBoard, score(gameBoard));
 
         // get the players move.
         char move = get_move();
@@ -56,8 +59,8 @@ int main() {
         else if(move == 'd') { // right
             move_right(gameBoard);
         }
-				else if(move == 27) { // ESC
-					game_over(gameBoard);
+				else if(move == 'q') {
+					game_over(gameBoard, score(gameBoard));
 				}
     }
 }
